@@ -1,0 +1,90 @@
+import tkinter as tk
+import matplotlib as plt
+from tkinter import CENTER, ttk
+from tkinter.font import BOLD
+from typing import Container 
+import re
+import numpy as np
+from matplotlib.backends.backend_tkagg import (FigureCanvasTkAgg)
+from matplotlib.figure import Figure
+
+##[\\+|$]
+##Parsing Function
+#Zip creation
+def Parsing():
+    var = given.get()
+    rplace = re.sub(r'(x)(\\+|$)',r'x^1',var)
+    test_X = re.sub(r'(^|\W)(x)',r'+1x',rplace)
+    print (test_X)
+    all_X = re.findall(r'(-*\w+.\w+|-*\w+|^-*)(x\^\d)',test_X)
+    print (all_X)
+    abss = [tuple(reversed(tup)) for tup in all_X]
+    print (abss)
+    print (dict(abss))
+
+dictionary = {}
+##Switch Frames
+def FrameSwitch(self=None):
+    a = frames()
+    xyz = given.get()
+##Main Page
+class frames(tk.Frame):
+    def __init__(self):
+        super().__init__()
+        self.framez = tk.Frame(window)
+        ##label1 = tk.Label(self.framez, text = f'You succeed')
+        ##label1.place(relx= 0.5, rely= 0.5, anchor= tk.CENTER)
+        self.framez.pack(fill='both',expand=1)
+        self.framez.tkraise()
+        ###Graph Appeared
+        fig = Figure(figsize=(5,4), dpi= 100)
+        t = np.arange(0, 3, 0.01)
+        fig.add_subplot(1, 1 ,1).plot(t, -0.5 * (t-1.5)**3)
+        ###Graph Appeared Ends
+        ###Make Canvas Available on Graphing Page
+        canvas = FigureCanvasTkAgg(fig, master=self.framez)
+        canvas.draw()
+        canvas.get_tk_widget().pack(side=tk.TOP, fill=tk.BOTH, expand=1)
+        Parsing()
+
+##Window Creation
+window = tk.Tk()
+frame = tk.Frame(window)
+window.title('MainPage')
+##Function onclick
+def onclick(self = None):
+    var_Onclick = given.get()
+    print (var_Onclick)
+##Store String Variable input
+given = tk.StringVar()
+##Set in window geometry
+window.geometry("600x600")
+## tk.Label creation
+Label = tk.Label(font = ("Times New Roman",20, BOLD), text = "POLYNOMIAL GRAPHING CALCULATOR")
+## Label Placing: Relx is relative x in percentage (decimal) to the center and same with y.
+Label.place(relx= 0.5, rely=0.1, anchor = tk.CENTER)
+## Button initializing 
+testbutton = tk.Button(bd= 5,text="Enter", command=FrameSwitch)
+## Button formation/packing 
+testbutton.pack() 
+## Button placing
+testbutton.place(relx= 0.5, rely = 0.4, anchor=tk.CENTER)
+##Tk.Entry Field Initializing
+Field = tk.Entry(bd = 5, textvariable= given)
+Field.pack()
+Field.place(relx= 0.5, rely = 0.3, anchor=tk.CENTER)
+##Field Bind Return/Enter Button
+Field.bind('<Return>', FrameSwitch)
+window.mainloop()
+
+##Parsing Function
+#Zip creation
+def Parsing():
+    var = given.get()
+    test_X = re.sub(r'(^|\w)(x)',('+1x'),var)
+    print (test_X)
+    all_X = re.findall(r'(\w+.\w+|\w+|^)(x\^\d)',test_X)
+    print (all_X)
+    abss = [tuple(reversed(tup)) for tup in all_X]
+    print (abss)
+    print (dict(abss))
